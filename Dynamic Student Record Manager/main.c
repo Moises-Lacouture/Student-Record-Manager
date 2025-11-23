@@ -6,14 +6,11 @@
  Description:
  */
 
-
-//search: How to save a string in c, it is with an array but search the best way to do it.
-//search: How to create your library, for the functions, and how to connect it.
-//search: How to do a function, the diferent types of functions too.
-
 //Do a function that takes the input string and returns the string with the first letter capitalize and the rest in lowercase.(This is for the name and lastname)
+
 #include <stdio.h>
 #include "Libraries/library.h"
+#include "Libraries/student.h"
 
 int main(void){
     int userOption = 0; // User response variable
@@ -22,6 +19,13 @@ int main(void){
             case 1:{ // Add students option
                 char firstName[50];
                 char lastName[50];
+                
+                int englishGrade,
+                spanishGrade,
+                mathGrade,
+                socialsGrade,
+                religionGrade;
+                
                 printf("Please enter the First Name of the student>\n>> ");
                 scanf("%49s", firstName);
                 
@@ -29,15 +33,20 @@ int main(void){
                 scanf("%49s", lastName);
                 
                 printf("Please enter the final grade for the English class:\n>> ");
+                scanf("%d", &englishGrade);
                 
                 printf("Please enter the final grade for the Spanish class:\n>> ");
+                scanf("%d", &spanishGrade);
                 
                 printf("Please enter the final grade for the Math class:\n>> ");
-                
+                scanf("%d", &mathGrade);
+
                 printf("Please enter the final grade for the Social Studies class:\n>> ");
-                
+                scanf("%d", &socialsGrade);
+
                 printf("Please enter the final grade for the Religion class:\n>> ");
-                
+                scanf("%d", &religionGrade);
+
                 break;
             }
             case 2:{ // Remove studetns option
