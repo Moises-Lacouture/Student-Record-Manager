@@ -11,9 +11,17 @@
 //search: How to create your library, for the functions, and how to connect it.
 //search: How to do a function, the diferent types of functions too.
 
-//Do a function that depending on the grade in int will return a grade in letter(always use capital letter for the grade).
-//Do a function that takes the input string and returns the string with the first letter capitalize and the rest in lowercase.
+//Do a function that takes the input string and returns the string with the first letter capitalize and the rest in lowercase.(This is for the name and lastname)
 #include <stdio.h>
+
+char gradeLetter(int grade){ //Function return grade in letter with grade in int
+    if(grade >= 90) return 'A';
+    if(grade >=80) return 'B';
+    if(grade >= 70) return 'C';
+    if(grade >=60) return 'D';
+    if(grade >= 0) return 'F';
+    return '?';//Invalid grade
+}
 
 int main(void){
     int userOption = 0; // User response variable
