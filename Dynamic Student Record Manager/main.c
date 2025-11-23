@@ -13,15 +13,7 @@
 
 //Do a function that takes the input string and returns the string with the first letter capitalize and the rest in lowercase.(This is for the name and lastname)
 #include <stdio.h>
-
-char gradeLetter(int grade){ //Function return grade in letter with grade in int
-    if(grade >= 90) return 'A';
-    if(grade >=80) return 'B';
-    if(grade >= 70) return 'C';
-    if(grade >=60) return 'D';
-    if(grade >= 0) return 'F';
-    return '?';//Invalid grade
-}
+#include "Libraries/library.h"
 
 int main(void){
     int userOption = 0; // User response variable
