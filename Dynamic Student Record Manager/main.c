@@ -19,40 +19,48 @@ int main(void){
     int userOption = 0; // User response variable
     do {
         switch (userOption) {
-            case 1: // Add students option
+            case 1:{ // Add students option
+                char firstName[50];
+                char lastName[50];
                 printf("Please enter the First Name of the student>\n>> ");
+                scanf("%49s", firstName);
                 
                 printf("Please enter the last name of the student\n>> ");
+                scanf("%49s", lastName);
                 
                 printf("Please enter the final grade for the English class:\n>> ");
                 
                 printf("Please enter the final grade for the Spanish class:\n>> ");
-
+                
                 printf("Please enter the final grade for the Math class:\n>> ");
-
+                
                 printf("Please enter the final grade for the Social Studies class:\n>> ");
-
+                
                 printf("Please enter the final grade for the Religion class:\n>> ");
-
+                
                 break;
-            case 2: // Remove studetns option
+            }
+            case 2:{ // Remove studetns option
                 printf("Choose the student you want to remove:\n>> ");
                 //Find a way to take the struct students from the array and display their names.(Show all the students)
                 //Once the student is chose, display all the information of that student(This code is repeated, create a function for it)
-
+                
                 break;
-            case 3: // Search students
+            }
+            case 3:{ // Search students
                 printf("Choose the student:\n>> ");
                 //Show all the students
                 //once the student is chosen, show all the information of the student
                 break;
-            case 4: // Update students
+            }
+            case 4:{ // Update students
                 printf("Choose the student you want to update:\n>> ");
                 //Show all the students
                 //Once the student is chose, display all the information of that student in options
                 //Once the option is chosen and the updated value is entered make a confirmation showing the current value and the new value entered.
                 printf("");
                 break;
+            }
             
             default:
                 printf("Input option is not valid.\n>> ");
