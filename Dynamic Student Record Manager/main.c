@@ -8,26 +8,26 @@
 
 //Do a function that takes the input string and returns the string with the first letter capitalize and the rest in lowercase.(This is for the name and lastname)
 
+//Add a feature to save the data, this is done via creating, reading and modifing text files.
+
 #include <stdio.h>
 #include "Libraries/library.h"
 #include "Libraries/student.h"
 
 int main(void){
-    int userOption = 0; // User response variable
+    int userOption = 0,
+    studentTotal = 0; // User response variable
+    
+    struct Student students[100];
+
+
     do {
+        printf("Please choose your option\n>> ");//temporal printf, need to create menu and show options
+        scanf("%d",&userOption);
+        
         switch (userOption) {
             case 1:{ // Add students option
-                char firstName[50];
-                char lastName[50];
                 
-                int englishGrade,
-                spanishGrade,
-                mathGrade,
-                socialsGrade,
-                religionGrade,
-                studentID;
-                
-                struct Student students[100];
                 struct Student student;
                 
                 printf("Please enter the First Name of the student>\n>> ");
@@ -54,11 +54,13 @@ int main(void){
                 printf("Please enter the final grade for the Religion class:\n>> ");
                 scanf("%d", &student.grades[4]);
 
+                students[studentTotal] = student;
+                studentTotal += 1;
                 break;
             }
             case 2:{ // Remove studetns option
                 printf("Choose the student you want to remove:\n>> ");
-                //Find a way to take the struct students from the array and display their names.(Show all the students)
+                printAllStudentsInfo(students, studentTotal);
                 //Once the student is chose, display all the information of that student(This code is repeated, create a function for it)
                 
                 break;
