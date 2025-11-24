@@ -9,3 +9,4 @@ char gradeLetter(int grade){ //Function return grade in letter with grade in int
     return '?';//Invalid grade
 }
 
+//implement add, remove, update, search, compute statistics and display modular functions.

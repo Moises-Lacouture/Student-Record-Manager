@@ -24,28 +24,35 @@ int main(void){
                 spanishGrade,
                 mathGrade,
                 socialsGrade,
-                religionGrade;
+                religionGrade,
+                studentID;
+                
+                struct Student students[100];
+                struct Student student;
                 
                 printf("Please enter the First Name of the student>\n>> ");
-                scanf("%49s", firstName);
+                scanf("%49s", student.firstName);
                 
                 printf("Please enter the last name of the student\n>> ");
-                scanf("%49s", lastName);
+                scanf("%49s", student.lastName);
+                
+                printf("Please enter the ID of the student\n>> ");
+                scanf("%d", &student.studentID);
                 
                 printf("Please enter the final grade for the English class:\n>> ");
-                scanf("%d", &englishGrade);
+                scanf("%d", &student.grades[0]);
                 
                 printf("Please enter the final grade for the Spanish class:\n>> ");
-                scanf("%d", &spanishGrade);
+                scanf("%d", &student.grades[1]);
                 
                 printf("Please enter the final grade for the Math class:\n>> ");
-                scanf("%d", &mathGrade);
+                scanf("%d", &student.grades[2]);
 
                 printf("Please enter the final grade for the Social Studies class:\n>> ");
-                scanf("%d", &socialsGrade);
+                scanf("%d", &student.grades[3]);
 
                 printf("Please enter the final grade for the Religion class:\n>> ");
-                scanf("%d", &religionGrade);
+                scanf("%d", &student.grades[4]);
 
                 break;
             }
