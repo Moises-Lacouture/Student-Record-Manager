@@ -10,11 +10,14 @@
 #include <stdlib.h>
 #include "Libraries/library.h"
 #include "Libraries/student.h"
+#define STUDENT_DATA "students_list.csv"
 
 int main(void){
     int userOption = 0;// User response variable
     struct StudentNode *head = NULL;
     
+    loadFromFile(&head, STUDENT_DATA);
+
     do {
         printf("\t-------- Student Record Manager --------\n");
         
@@ -22,7 +25,11 @@ int main(void){
         printf("2. Remove Student.\n");
         printf("3. Search student.\n");
         printf("4. Update student.\n");
-        printf("9. Save list.\n");
+        printf("5. Print students (Add sort option here).\n");
+        printf("6. Save List.\n");
+        printf("7. Re-load list.\n");
+        
+        printf("9. Exit.\n");
         
         
         printf("Please choose your option\n>> ");
@@ -40,7 +47,7 @@ int main(void){
                 scanf("%49s", student.lastName);
                 
                 printf("Please enter the ID of the student\n>> ");
-                scanf("%d", &student.studentID);
+                scanf("%lld", &student.studentID);
                 
                 printf("Please enter the final grade for the English class:\n>> ");
                 scanf("%d", &student.grades[0]);
@@ -61,19 +68,27 @@ int main(void){
                 break;
             }
             case 2:{ // Remove student option
-                int userRemoveStudent;//variable for student removal, user
-                printAllStudents(head);
-                printf("Choose the student you want to remove:\n>> ");
-                scanf("%d", &userRemoveStudent);//user enters the student they want removed
-                //Create the function for removing specific student in the linked list with their memory address(This uses pointer/linked list)
-                printf("Remove feature coming soon.");
+                if (head == NULL) {
+                    printf("No students in the list.\n");
+                    break;
+                }
                 
+                int userRemoveStudent;
+                printAllStudents(head);
+                printf("Choose the student you want to remove (0 to cancel):\n>> ");
+                scanf("%d", &userRemoveStudent);
+                
+                if (userRemoveStudent == 0) {
+                    printf("Cancelled.\n");
+                    break;
+                }
+                
+                removeStudent(&head, userRemoveStudent);
                 break;
             }
             case 3:{ // Search students
-                int userSearchSelection;
-                scanf("%d", &userSearchSelection);
-                //printf that shows the options of search of the student. By passing grades(GPA), by passing or failing grade in an specific class.
+                searchMenu(head);
+                
                 break;
             }
             case 4:{
@@ -109,11 +124,35 @@ int main(void){
                 
                 break;
             }
-            
+            case 5:{
+                printAllStudents(head);
+                break;
+            }
+            case 6:{
+                saveToFile(head, STUDENT_DATA);
+                break;
+            }
+            case 7:{
+                freeAllStudents(&head);
+                loadFromFile(&head, STUDENT_DATA);
+                break;
+            }
+            case 9: {
+                printf("Save before exiting?\n1 for Yes\n0 for No:\n>> ");
+                int saveChoice;
+                scanf("%d", &saveChoice);
+                
+                if (saveChoice == 1) {
+                    saveToFile(head, STUDENT_DATA);
+                }
+                
+                freeAllStudents(&head);
+                break;
+            }
             default:
                 printf("Input option is not valid.\n>> ");
                 break;
         }
-    } while (userOption != 5);
+    } while (userOption != 9);
     return 0;
 }
