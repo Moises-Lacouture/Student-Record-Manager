@@ -6,20 +6,15 @@
  Description:
  */
 
-//Do a function that takes the input string and returns the string with the first letter capitalize and the rest in lowercase.(This is for the name and lastname)
-
-//Add a feature to save the data, this is done via creating, reading and modifing text files.
-
 #include <stdio.h>
+#include <stdlib.h>
 #include "Libraries/library.h"
 #include "Libraries/student.h"
 
 int main(void){
-    int userOption = 0,// User response variable
-    studentTotal = 0; // Amount of students(Size of the array/linked list)
+    int userOption = 0;// User response variable
+    struct StudentNode *head = NULL;
     
-    struct Student students[100];// array for students
-
     do {
         printf("\t-------- Student Record Manager --------\n");
         
@@ -30,7 +25,7 @@ int main(void){
         printf("9. Save list.\n");
         
         
-        printf("Please choose your option\n>> ");//temporal printf, need to create menu and show options
+        printf("Please choose your option\n>> ");
         scanf("%d",&userOption);//variable for menu option, user
         
         switch (userOption) {
@@ -62,32 +57,44 @@ int main(void){
                 printf("Please enter the final grade for the Religion class:\n>> ");
                 scanf("%d", &student.grades[4]);
 
-                students[studentTotal] = student;//array of students
-                studentTotal += 1;//increase the size of the array each time a student is entered
+                insertStudent(&head, student);
                 break;
             }
             case 2:{ // Remove student option
                 int userRemoveStudent;//variable for student removal, user
+                printAllStudents(head);
                 printf("Choose the student you want to remove:\n>> ");
-                printAllStudentsInfo(students, studentTotal);
-                printf(">> ");
                 scanf("%d", &userRemoveStudent);//user enters the student they want removed
-                //Create function for student removal(This uses pointer)
+                //Create the function for removing specific student in the linked list with their memory address(This uses pointer/linked list)
+                printf("Remove feature coming soon.");
                 
                 break;
             }
             case 3:{ // Search students
-                printf("Choose the student:\n>> ");
-                //Show all the students
-                //once the student is chosen, show all the information of the student
+                int userSearchSelection;
+                scanf("%d", &userSearchSelection);
+                //printf that shows the options of search of the student. By passing grades(GPA), by passing or failing grade in an specific class.
                 break;
             }
-            case 4:{ // Update students
-                int userStudentSelection,
-                userUpdateSelect;
+            case 4:{
+                if (head == NULL) {
+                    printf("There are no students in the list.\n");
+                    break;
+                }
+                
+                int userStudentSelection, userUpdateSelect;
+                
+                printAllStudents(head);
                 printf("Choose the student you want to update:\n>> ");
-                printAllStudentsInfo(students, studentTotal);// Show all students
                 scanf("%d", &userStudentSelection);
+                
+                struct StudentNode *node = getStudentAtPosition(head, userStudentSelection);
+                
+                if (node == NULL) {
+                    printf("Invalid student selection.\n");
+                    break;
+                }
+                
                 printf("What do you want to change from the student?\n");
                 printf("1. The name.\n");
                 printf("2. Student ID.\n");
@@ -98,7 +105,7 @@ int main(void){
                 printf("7. Grade for Religion class.\n");
                 scanf("%d", &userUpdateSelect);
                 
-                updateStudent(userUpdateSelect, userStudentSelection, students);
+                updateStudentInNode(userUpdateSelect, &(node->student));
                 
                 break;
             }

@@ -1,6 +1,7 @@
 #include "library.h"
 #include "student.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 char gradeLetter(int grade){ //Function return grade in letter with grade in int
@@ -14,124 +15,152 @@ char gradeLetter(int grade){ //Function return grade in letter with grade in int
 
 //implement add, remove, update, search, compute statistics and display modular functions.
 
-void printAllStudentsInfo(struct Student *students, int studentTotal){//This Function will print ALL the information of ALL the students.
+struct StudentNode* createStudentNode(struct Student s){// Create a new student node
+    struct StudentNode *newNode = (struct StudentNode*)malloc(sizeof(struct StudentNode));
     
-    for (int i = 0; i < studentTotal; i++) {
-        
-        
-        printf("%d. Name: %s %s.\n",i + 1,(students + i)->lastName, (students + i) -> firstName);
-        printf("Student ID#: %d\n", (students + i)-> studentID);
-        printf("Grade for English class: %d %c \n", (students + i)->grades[0], gradeLetter((students+ i)->grades[0]));
-        printf("Grade for Spanish class: %d %c \n", (students + i)->grades[1], gradeLetter((students+ i)->grades[1]));
-        printf("Grade for Math class: %d %c \n", (students + i)->grades[1], gradeLetter((students+ i)->grades[2]));
-        printf("Grade for Social Studies class: %d %c \n", (students + i)->grades[1], gradeLetter((students+ i)->grades[3]));
-        printf("Grade for Religion class: %d %c \n", (students + i)->grades[1], gradeLetter((students+ i)->grades[4]));
-        printf("===============================\n");
+    if(newNode == NULL){
+        printf("Error: memory allocation failed.\n");
+        return NULL;
+    }
+    
+    newNode->student = s;
+    newNode->next = NULL;
+    
+    return newNode;
+}
 
+void insertStudent(struct StudentNode **head, struct Student s) {// Insert student in the beginning
+    struct StudentNode *newNode = createStudentNode(s);
+    
+    if (newNode == NULL)
+        return;
+    
+    newNode->next = *head;
+    
+    *head = newNode;
+}
+
+void printAllStudents(struct StudentNode *head) {// Print all students
+    if (head == NULL) {
+        printf("No students in the list.\n");
+        return;
+    }
+    
+    struct StudentNode *current = head;
+    int count = 1;
+    
+    while (current != NULL) {
+        printf("%d. Name: %s %s\n", count++,
+               current->student.lastName,
+               current->student.firstName);
+        printf("Student ID: %d\n", current->student.studentID);
+        printf("English: %d %c\n", current->student.grades[0],
+               gradeLetter(current->student.grades[0]));
+        printf("Spanish: %d %c\n", current->student.grades[1],
+               gradeLetter(current->student.grades[1]));
+        printf("Math: %d %c\n", current->student.grades[2],
+               gradeLetter(current->student.grades[2]));
+        printf("Social Studies: %d %c\n", current->student.grades[3],
+               gradeLetter(current->student.grades[3]));
+        printf("Religion: %d %c\n", current->student.grades[4],
+               gradeLetter(current->student.grades[4]));
+        
+        current = current->next;
     }
 }
 
-void updateStudent(int userSelection, int userStudentSelec, struct Student *students){
-    int index = userStudentSelec - 1;
+int StudentTotal(struct StudentNode *head) {// Amount of students in the list
+    int count = 0;
+    struct StudentNode *current = head;
+    
+    while (current != NULL) {
+        count++;
+        current = current->next;
+    }
+    
+    return count;
+}
+
+struct StudentNode* getStudentAtPosition(struct StudentNode *head, int position) { // Change poistion in the list of the student
+    struct StudentNode *current = head;
+    int count = 1;
+    
+    while (current != NULL && count < position) {
+        current = current->next;
+        count++;
+    }
+    
+    return current;
+}
+
+void updateStudentInNode(int userSelection, struct Student *student) { //Change the information of the student in the selected position
     switch (userSelection) {
-        case 1:{
-            char firstName[50],
-            lastName[50];
+        case 1: {
+            char firstName[50], lastName[50];
             
             printf("What will the last name be:\n>> ");
             scanf("%49s", lastName);
             
             printf("What will the first name be:\n>> ");
-            scanf("%49s",firstName);
+            scanf("%49s", firstName);
             
-            strcpy(students[index].lastName, lastName);
-            strcpy(students[index].firstName, firstName);
-
-            printf("Updated student name succesfully\n");
+            strcpy(student->lastName, lastName);
+            strcpy(student->firstName, firstName);
             
             break;
         }
-            
-        case 2:{
+        
+        case 2: {
             int newID;
             printf("What will the new student ID be:\n>> ");
             scanf("%d", &newID);
             
-            students[index].studentID = newID;
-            
-            printf("Updated student ID succesfully\n");
-            
+            student->studentID = newID;
             break;
         }
-            
-        case 3:{
+        
+        case 3: {
             int newGrade;
-            
             printf("What will the new English class grade be:\n>> ");
             scanf("%d", &newGrade);
-            
-            students[index].grades[0] = newGrade;
-            
-            printf("Updated english class grade succesfully\n");
-            
+            student->grades[0] = newGrade;
             break;
         }
-        case 4:{
+        
+        case 4: {
             int newGrade;
-            
-            printf("What will the new spanish class grade be:\n>> ");
+            printf("What will the new Spanish class grade be:\n>> ");
             scanf("%d", &newGrade);
-            
-            students[index].grades[1] = newGrade;
-            
-            printf("Updated spanish class grade succesfully\n");
-            
+            student->grades[1] = newGrade;
             break;
         }
-            
-        case 5:{
+        
+        case 5: {
             int newGrade;
-            
-            printf("What will the new math class grade be:\n>> ");
+            printf("What will the new Math class grade be:\n>> ");
             scanf("%d", &newGrade);
-            
-            students[index].grades[2] = newGrade;
-            
-            printf("Updated math class grade succesfully\n");
-            
+            student->grades[2] = newGrade;
             break;
         }
-            
-        case 6:{
+        
+        case 6: {
             int newGrade;
-            
-            printf("What will the new social studies class grade be:\n>> ");
+            printf("What will the new Social Studies class grade be:\n>> ");
             scanf("%d", &newGrade);
-            
-            students[index].grades[3] = newGrade;
-            
-            printf("Updated social studies class grade succesfully\n");
-            
+            student->grades[3] = newGrade;
             break;
         }
-            
-        case 7:{
+        
+        case 7: {
             int newGrade;
-            
-            printf("What will the new religion class grade be:\n>> ");
+            printf("What will the new Religion class grade be:\n>> ");
             scanf("%d", &newGrade);
-            
-            students[index].grades[4] = newGrade;
-            
-            printf("Updated religion class grade succesfully\n");
-            
+            student->grades[4] = newGrade;
             break;
         }
-            
+        
         default:
+            printf("Invalid option chosen.\n");
             break;
     }
 }
-// invalid input function
-//Create function for student removal(This uses pointer to modify the array/linked list/variable that has the number of students)
-//Update the element in an array

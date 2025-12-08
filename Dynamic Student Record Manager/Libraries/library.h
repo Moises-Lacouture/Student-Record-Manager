@@ -3,7 +3,11 @@
 #include "student.h"
 
 char gradeLetter(int grade);
-void printAllStudentsInfo(struct Student *students, int studentTotal);
-void updateStudent(int userSelection, int userStudentSelec, struct Student *students);
+struct StudentNode* createStudentNode(struct Student s);
+void insertStudent(struct StudentNode **head, struct Student s);
+void printAllStudents(struct StudentNode *head);
+int countStudents(struct StudentNode *head);
+struct StudentNode* getStudentAtPosition(struct StudentNode *head, int position);
+void updateStudentInNode(int userSelection, struct Student *student);
 
 #endif
