@@ -53,7 +53,7 @@ void printAllStudents(struct StudentNode *head) {// Print all students
         printf("%d. Name: %s %s\n", count++,
                current->student.lastName,
                current->student.firstName);
-        printf("Student ID: %d\n", current->student.studentID);
+        printf("Student ID: %ld\n", current->student.studentID);
         printf("English: %d %c\n", current->student.grades[0],
                gradeLetter(current->student.grades[0]));
         printf("Spanish: %d %c\n", current->student.grades[1],
