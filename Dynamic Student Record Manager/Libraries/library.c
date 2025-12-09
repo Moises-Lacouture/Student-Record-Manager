@@ -52,22 +52,22 @@ void printAllStudents(struct StudentNode *head) {// Print all students
                current->student.lastName,
                current->student.firstName);
         printf("Student ID: %lld\n", current->student.studentID);
-        printf("English: %d %c\n", current->student.grades[0],
-               gradeLetter(current->student.grades[0]));
-        printf("Spanish: %d %c\n", current->student.grades[1],
-               gradeLetter(current->student.grades[1]));
-        printf("Math: %d %c\n", current->student.grades[2],
-               gradeLetter(current->student.grades[2]));
-        printf("Social Studies: %d %c\n", current->student.grades[3],
-               gradeLetter(current->student.grades[3]));
-        printf("Religion: %d %c\n", current->student.grades[4],
-               gradeLetter(current->student.grades[4]));
+        printf("English: %d %c (%d credits)\n", current->student.grades[0],
+               gradeLetter(current->student.grades[0]), current->student.credits[0]);
+        printf("Spanish: %d %c (%d credits)\n", current->student.grades[1],
+               gradeLetter(current->student.grades[1]), current->student.credits[1]);
+        printf("Math: %d %c (%d credits)\n", current->student.grades[2],
+               gradeLetter(current->student.grades[2]), current->student.credits[2]);
+        printf("Social Studies: %d %c (%d credits)\n", current->student.grades[3],
+               gradeLetter(current->student.grades[3]), current->student.credits[3]);
+        printf("Religion: %d %c (%d credits)\n", current->student.grades[4],
+               gradeLetter(current->student.grades[4]), current->student.credits[4]);
         
         current = current->next;
     }
 }
 
-int StudentTotal(struct StudentNode *head) {// Amount of students in the list
+int countStudents(struct StudentNode *head) {// Amount of students in the list
     int count = 0;
     struct StudentNode *current = head;
     
@@ -201,11 +201,11 @@ void printSingleStudent(struct Student *student) {
     
     printf("Name: %s %s\n", student->lastName, student->firstName);
     printf("Student ID: %lld\n", student->studentID);
-    printf("English: %3d %c\n", student->grades[0], gradeLetter(student->grades[0]));
-    printf("Spanish: %3d %c\n", student->grades[1], gradeLetter(student->grades[1]));
-    printf("Math: %3d %c\n", student->grades[2], gradeLetter(student->grades[2]));
-    printf("Social Studies: %3d %c\n", student->grades[3], gradeLetter(student->grades[3]));
-    printf("Religion: %3d %c\n", student->grades[4], gradeLetter(student->grades[4]));
+    printf("English: %3d %c (%d credits)\n", student->grades[0], gradeLetter(student->grades[0]), student->credits[0]);
+    printf("Spanish: %3d %c (%d credits)\n", student->grades[1], gradeLetter(student->grades[1]), student->credits[1]);
+    printf("Math: %3d %c (%d credits)\n", student->grades[2], gradeLetter(student->grades[2]), student->credits[2]);
+    printf("Social Studies: %3d %c (%d credits)\n", student->grades[3], gradeLetter(student->grades[3]), student->credits[3]);
+    printf("Religion: %3d %c (%d credits)\n", student->grades[4], gradeLetter(student->grades[4]), student->credits[4]);
     printStudentStatistics(student);
 }
 
@@ -414,10 +414,7 @@ int getValidGrade(const char *prompt) {
     return grade;
 }
 
-// ============== File I/O ==============
-
 void saveToFile(struct StudentNode *head, const char *filename) {
-    // Save all students to a CSV file
     if (head == NULL) {
         printf("No students to save.\n");
         return;
@@ -430,14 +427,13 @@ void saveToFile(struct StudentNode *head, const char *filename) {
         return;
     }
     
-    // Write header line
-    fprintf(file, "FirstName,LastName,StudentID,English,Spanish,Math,SocialStudies,Religion\n");
-    
+    fprintf(file, "FirstName,LastName,StudentID,English,Spanish,Math,SocialStudies,Religion,Cred1,Cred2,Cred3,Cred4,Cred5\n");
+
     struct StudentNode *current = head;
     int count = 0;
     
     while (current != NULL) {
-        fprintf(file, "%s,%s,%lld,%d,%d,%d,%d,%d\n",
+        fprintf(file, "%s,%s,%lld,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d\n",
                 current->student.firstName,
                 current->student.lastName,
                 current->student.studentID,
@@ -445,7 +441,13 @@ void saveToFile(struct StudentNode *head, const char *filename) {
                 current->student.grades[1],
                 current->student.grades[2],
                 current->student.grades[3],
-                current->student.grades[4]);
+                current->student.grades[4],
+                current->student.credits[0],
+                current->student.credits[1],
+                current->student.credits[2],
+                current->student.credits[3],
+                current->student.credits[4]);
+        
         count++;
         current = current->next;
     }
@@ -455,7 +457,7 @@ void saveToFile(struct StudentNode *head, const char *filename) {
 }
 
 void loadFromFile(struct StudentNode **head, const char *filename) {
-    // Load students from a CSV file
+
     FILE *file = fopen(filename, "r");
     
     if (file == NULL) {
@@ -463,7 +465,6 @@ void loadFromFile(struct StudentNode **head, const char *filename) {
         return;
     }
     
-    // Skip header line
     char header[256];
     if (fgets(header, sizeof(header), file) == NULL) {
         printf("Error reading file header.\n");
@@ -474,7 +475,7 @@ void loadFromFile(struct StudentNode **head, const char *filename) {
     struct Student student;
     int count = 0;
     
-    while (fscanf(file, "%49[^,],%49[^,],%lld,%d,%d,%d,%d,%d\n",
+    while (fscanf(file, "%49[^,],%49[^,],%lld,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d\n",
                   student.firstName,
                   student.lastName,
                   &student.studentID,
@@ -482,9 +483,13 @@ void loadFromFile(struct StudentNode **head, const char *filename) {
                   &student.grades[1],
                   &student.grades[2],
                   &student.grades[3],
-                  &student.grades[4]) == 8) {
+                  &student.grades[4],
+                  &student.credits[0],
+                  &student.credits[1],
+                  &student.credits[2],
+                  &student.credits[3],
+                  &student.credits[4]) == 13) {
         
-        // Create node directly to avoid the "added successfully" message for each
         struct StudentNode *newNode = createStudentNode(student);
         if (newNode != NULL) {
             newNode->next = *head;
@@ -495,4 +500,88 @@ void loadFromFile(struct StudentNode **head, const char *filename) {
     
     fclose(file);
     printf("Successfully loaded %d student(s) from '%s'.\n", count, filename);
+}
+
+void sortByGPA(struct StudentNode **head) {
+    if (*head == NULL || (*head)->next == NULL) return;
+    
+    int swapped;
+    struct StudentNode *ptr1;
+    struct StudentNode *lptr = NULL;
+    
+    do {
+        swapped = 0;
+        ptr1 = *head;
+        
+        while (ptr1->next != lptr) {
+            float gpa1 = calculateStudentAverage(&(ptr1->student));
+            float gpa2 = calculateStudentAverage(&(ptr1->next->student));
+            
+            if (gpa1 < gpa2) {
+                struct Student temp = ptr1->student;
+                ptr1->student = ptr1->next->student;
+                ptr1->next->student = temp;
+                swapped = 1;
+            }
+            ptr1 = ptr1->next;
+        }
+        lptr = ptr1;
+    } while (swapped);
+    
+    printf("List sorted by GPA (highest first).\n");
+}
+
+void sortByLastName(struct StudentNode **head) {
+    if (*head == NULL || (*head)->next == NULL) return;
+    
+    int swapped;
+    struct StudentNode *ptr1;
+    struct StudentNode *lptr = NULL;
+    
+    do {
+        swapped = 0;
+        ptr1 = *head;
+        
+        while (ptr1->next != lptr) {
+            if (strcmp(ptr1->student.lastName, ptr1->next->student.lastName) > 0) {
+                struct Student temp = ptr1->student;
+                ptr1->student = ptr1->next->student;
+                ptr1->next->student = temp;
+                swapped = 1;
+            }
+            ptr1 = ptr1->next;
+        }
+        lptr = ptr1;
+    } while (swapped);
+    
+    printf("List sorted by last name, A-Z.\n");
+}
+
+void printTopStudents(struct StudentNode *head, int n) {
+    if (head == NULL) {
+        printf("No students in list.\n");
+        return;
+    }
+    
+    int total = countStudents(head);
+    
+    if (n > total) {
+        printf("Only %d students in list. Showing all.\n", total);
+        n = total;
+    }
+    
+    sortByGPA(&head);
+    
+    printf("\nTOP %d STUDENTS\n", n);
+    struct StudentNode *current = head;
+    int count = 0;
+    
+    while (current != NULL && count < n) {
+        count++;
+        printf("%d. %s %s - GPA: %.2f\n", count,
+               current->student.lastName,
+               current->student.firstName,
+               calculateStudentAverage(&(current->student)));
+        current = current->next;
+    }
 }

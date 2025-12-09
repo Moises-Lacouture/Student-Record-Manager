@@ -14,9 +14,9 @@
 
 int main(void){
     int userOption = 0;// User response variable
-    struct StudentNode *head = NULL;
+    struct StudentNode *head = NULL; //Student node
     
-    loadFromFile(&head, STUDENT_DATA);
+    loadFromFile(&head, STUDENT_DATA);//Check if there is already a file for the student record
 
     do {
         printf("\t-------- Student Record Manager --------\n");
@@ -25,9 +25,10 @@ int main(void){
         printf("2. Remove Student.\n");
         printf("3. Search student.\n");
         printf("4. Update student.\n");
-        printf("5. Print students (Add sort option here).\n");
+        printf("5. Print students.\n");
         printf("6. Save List.\n");
         printf("7. Re-load list.\n");
+        printf("8. Sort / Top Students.\n");
         
         printf("9. Exit.\n");
         
@@ -49,20 +50,30 @@ int main(void){
                 printf("Please enter the ID of the student\n>> ");
                 scanf("%lld", &student.studentID);
                 
-                printf("Please enter the final grade for the English class:\n>> ");
-                scanf("%d", &student.grades[0]);
+                if (searchByID(head, student.studentID) != NULL) {//Checking if ID is duplicate
+                    printf("Error: A student with ID %lld already exists.\n", student.studentID);
+                    break;
+                }
                 
-                printf("Please enter the final grade for the Spanish class:\n>> ");
-                scanf("%d", &student.grades[1]);
-                
-                printf("Please enter the final grade for the Math class:\n>> ");
-                scanf("%d", &student.grades[2]);
-
-                printf("Please enter the final grade for the Social Studies class:\n>> ");
-                scanf("%d", &student.grades[3]);
-
-                printf("Please enter the final grade for the Religion class:\n>> ");
-                scanf("%d", &student.grades[4]);
+                 student.grades[0] = getValidGrade("Please enter the final grade for English class:\n>> ");
+                 printf("Credits for English:\n>> ");
+                 scanf("%d", &student.credits[0]);
+                 
+                 student.grades[1] = getValidGrade("Please enter the final grade for Spanish class:\n>> ");
+                 printf("Credits for Spanish:\n>> ");
+                 scanf("%d", &student.credits[1]);
+                 
+                 student.grades[2] = getValidGrade("Please enter the final grade for Math class:\n>> ");
+                 printf("Credits for Math:\n>> ");
+                 scanf("%d", &student.credits[2]);
+                 
+                 student.grades[3] = getValidGrade("Please enter the final grade for Social Studies class:\n>> ");
+                 printf("Credits for Social Studies:\n>> ");
+                 scanf("%d", &student.credits[3]);
+                 
+                 student.grades[4] = getValidGrade("Please enter the final grade for Religion class:\n>> ");
+                 printf("Credits for Religion:\n>> ");
+                 scanf("%d", &student.credits[4]);
 
                 insertStudent(&head, student);
                 break;
@@ -135,6 +146,35 @@ int main(void){
             case 7:{
                 freeAllStudents(&head);
                 loadFromFile(&head, STUDENT_DATA);
+                break;
+            }
+            case 8: {
+                if (head == NULL) {
+                    printf("No students in the list.\n");
+                    break;
+                }
+                
+                int sortOption;
+                printf("\n1. Sort by GPA, highest first.\n");
+                printf("2. Sort by Last Name (A-Z)\n");
+                printf("3. Show Top Students\n");
+                printf(">> ");
+                scanf("%d", &sortOption);
+                
+                if (sortOption == 1) {
+                    sortByGPA(&head);
+                    printAllStudents(head);
+                } else if (sortOption == 2) {
+                    sortByLastName(&head);
+                    printAllStudents(head);
+                } else if (sortOption == 3) {
+                    int n;
+                    printf("How many top students to show?\n>> ");
+                    scanf("%d", &n);
+                    printTopStudents(head, n);
+                } else {
+                    printf("Invalid option.\n");
+                }
                 break;
             }
             case 9: {

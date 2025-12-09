@@ -5,6 +5,7 @@ struct Student{
     char firstName[50];
     char lastName[50];
     long long studentID;
+    int credits[5];
     int grades[5];//array to save the grades
     // Position of classes in the grades array:
 //    1. english

@@ -44,4 +44,9 @@ int getValidGrade(const char *prompt);
 void saveToFile(struct StudentNode *head, const char *filename);
 void loadFromFile(struct StudentNode **head, const char *filename);
 
+//Sorting Function
+void sortByGPA(struct StudentNode **head);
+void sortByLastName(struct StudentNode **head);
+void printTopStudents(struct StudentNode *head, int n);
+
 #endif
